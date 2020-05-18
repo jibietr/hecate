@@ -156,11 +156,27 @@ void generate_thumbnails( hecate_params& opt, vector<int>& v_thumb_idx )
   string filename = hecate::get_filename( std::string(opt.in_video) );
 
   VideoCapture vr( opt.in_video );
-  double rsz_ratio = (double)(2+opt.jpg_width_px)/vr.get(CV_CAP_PROP_FRAME_WIDTH);
+  //double rsz_ratio = (double)(2+opt.jpg_width_px)/vr.get(CV_CAP_PROP_FRAME_WIDTH);
+  double rsz_ratio_width = 1.0;
+  double rsz_ratio_height = 1.0;
+  if (opt.jpg_width_px>0.0 && opt.jpg_height_px>0.0){
+      rsz_ratio_width = (opt.jpg_width_px)/vr.get(CV_CAP_PROP_FRAME_WIDTH);
+      rsz_ratio_height = (opt.jpg_height_px)/vr.get(CV_CAP_PROP_FRAME_HEIGHT);
+      fprintf( stderr, "hecate_thumbnail: forcing thumbnails' width (%dpx) and height (%dpx)\n", opt.jpg_width_px, opt.jpg_height_px);
+  }else{
+    if(vr.get(CV_CAP_PROP_SAR_NUM)!=1 || vr.get(CV_CAP_PROP_SAR_DEN)!=1){
+      rsz_ratio_width = (16.0*vr.get(CV_CAP_PROP_SAR_DEN)/(9.0*vr.get(CV_CAP_PROP_SAR_NUM)));
+      fprintf( stderr, "hecate_thumbnail: anamorphic video with PAR (%d:%d). resizing thumbnails' width (x%0.2f)\n", (int) vr.get(CV_CAP_PROP_SAR_NUM), (int) vr.get(CV_CAP_PROP_SAR_DEN), rsz_ratio_width );
+    }
+  }
+  
   while( njpg_cnt < (int)v_thumb_idx.size() )
   {
     Mat frm; vr>>frm;
-    if( frm.empty() ) break;
+    if( frm.empty() ){
+        break;          
+
+    }
 
     // Check if the current frame is in the selected thumbnail list
     int rank = -1;
@@ -173,7 +189,9 @@ void generate_thumbnails( hecate_params& opt, vector<int>& v_thumb_idx )
 
     // Save that thumbnail
     if( rank>=0 && rank<opt.njpg ) {
-      resize( frm, frm, Size(), rsz_ratio, rsz_ratio, CV_INTER_LINEAR );
+      if( rsz_ratio_width >1.0){
+          resize( frm, frm, Size(), rsz_ratio_width, rsz_ratio_height, CV_INTER_LINEAR );
+      }
       frm = frm(Rect(0,0,frm.cols-2,frm.rows));
       sprintf( strbuf, "%s/%s_%02d.jpg",
               opt.out_dir.c_str(), filename.c_str(), rank );

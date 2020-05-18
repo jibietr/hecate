@@ -76,11 +76,6 @@ void run_hecate( hecate_params& opt, vector<int>& v_thumb_idx,
     opt.mov = false;
   }
   
-  // Check desired resolution of output
-  if( opt.jpg_width_px<0 || opt.jpg_width_px > parser.meta.width ) {
-    //fprintf( stderr, "run_hecate: Forcing jpg_width_px to %d\n",parser.meta.width);
-    opt.jpg_width_px = parser.meta.width;
-  }
   if( opt.gif_width_px<0 || opt.gif_width_px > parser.meta.width ) {
     //fprintf( stderr, "run_hecate: Forcing gif_width_px to %d\n",parser.meta.width);
     opt.gif_width_px = parser.meta.width;

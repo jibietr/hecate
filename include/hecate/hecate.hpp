@@ -60,6 +60,7 @@ struct hecate_params {
   int lmov;             // length of video summary (in seconds)
   int gif_fps;          // gif play speed
   int jpg_width_px;     // thumbnail image width
+  int jpg_height_px;     // thumbnail image height
   int gif_width_px;     // animated GIF width
   int mov_width_px;     // summary video width
   int max_duration;     // maximum length of video to process (in seconds)
@@ -87,7 +88,8 @@ struct hecate_params {
   ngif(5),
   lmov(15),
   gif_fps(8),
-  jpg_width_px(360),
+  jpg_width_px(0),
+  jpg_height_px(0),
   gif_width_px(360),
   mov_width_px(360),
   max_duration(-1),
@@ -120,6 +122,8 @@ inline void hecate_parse_params(int argc, char** argv, hecate_params& opt)
     {"lmov",            required_argument, 0, 'l'},
     {"gif_fps",         required_argument, 0, 'f'},
     {"jpg_width_px",    required_argument, 0, 'u'},
+    {"jpg_height_px",    required_argument, 0, 'u'},
+    {"input_video_dar",    required_argument, 0, 'r'},
     {"gif_width_px",    required_argument, 0, 'v'},
     {"mov_width_px",    required_argument, 0, 'w'},
     {"max_duration",    required_argument, 0, 'd'},
@@ -159,6 +163,7 @@ inline void hecate_parse_params(int argc, char** argv, hecate_params& opt)
       case 'l': opt.lmov             = atoi(optarg); break;
       case 'f': opt.gif_fps          = atoi(optarg); break;
       case 'u': opt.jpg_width_px     = atoi(optarg); break;
+      case 'r': opt.jpg_height_px     = atoi(optarg); break;
       case 'v': opt.gif_width_px     = atoi(optarg); break;
       case 'w': opt.mov_width_px     = atoi(optarg); break;
       case 'd': opt.max_duration     = atof(optarg); break;
@@ -209,6 +214,7 @@ inline void hecate_usage()
   printf("  -q  --ngif          (int)       Number of GIFs to be generated (%d)\n", opt.ngif);
   printf("  -r  --lmov          (int)       Length of video summary to be generated (in seconds) (%d)\n", opt.lmov);
   printf("  -u  --jpg_width_px  (int)       Pixel width of thumbnail images (%d)\n", opt.jpg_width_px);
+  printf("  -r  --jpg_height_px  (int)       Pixel width of thumbnail images (%d)\n", opt.jpg_height_px);
   printf("  -v  --gif_width_px  (int)       Pixel width of animated GIFs (%d)\n", opt.gif_width_px);
   printf("  -w  --mov_width_px  (int)       Pixel width of summary video (%d)\n", opt.mov_width_px);
   printf("  --generate_jpg                  Generate thumbnail images\n");
