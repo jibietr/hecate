@@ -164,7 +164,8 @@ void generate_thumbnails( hecate_params& opt, vector<int>& v_thumb_idx )
       rsz_ratio_height = (opt.jpg_height_px)/vr.get(CV_CAP_PROP_FRAME_HEIGHT);
       fprintf( stderr, "hecate_thumbnail: forcing thumbnails' width (%dpx) and height (%dpx)\n", opt.jpg_width_px, opt.jpg_height_px);
   }else{
-    if(vr.get(CV_CAP_PROP_SAR_NUM)!=1 || vr.get(CV_CAP_PROP_SAR_DEN)!=1){
+    // NUM different than 0 and 1 
+    if(vr.get(CV_CAP_PROP_SAR_NUM)>1 && vr.get(CV_CAP_PROP_SAR_DEN)>1){
       rsz_ratio_width = (16.0*vr.get(CV_CAP_PROP_SAR_DEN)/(9.0*vr.get(CV_CAP_PROP_SAR_NUM)));
       fprintf( stderr, "hecate_thumbnail: anamorphic video with PAR (%d:%d). resizing thumbnails' width (x%0.2f)\n", (int) vr.get(CV_CAP_PROP_SAR_NUM), (int) vr.get(CV_CAP_PROP_SAR_DEN), rsz_ratio_width );
     }
