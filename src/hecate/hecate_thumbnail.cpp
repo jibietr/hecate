@@ -31,7 +31,7 @@ void detect_thumbnail_frames( hecate_params& opt, hecate::video_metadata& meta,
   v_thumb_idx.clear();
 
   const int minK = 5;   // min #clusters
-  const int maxK = 30;  // max #clusters
+  const int maxK = 50;  // max #clusters
   const int nfrm = meta.nframes;
 
   vector<bool> v_frm_valid(nfrm,false);

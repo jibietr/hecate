@@ -28,7 +28,7 @@ void detect_highlight_shots( hecate_params& opt, hecate::video_metadata& meta,
   v_highlight_range.clear();
 
   const int minK = 5;
-  const int maxK = 30;
+  const int maxK = 50;
 
   ////////////////////////////////////////////////////////////////////////////
   //
